@@ -30,14 +30,7 @@ $(document).ready(function () {
 
         // Collect all selected ID's
         var selectedIds = [];
-        
-        // See if we have a selector set
-        var selection = 'selection';
-        if ($(this).data("selector") != null) {
-        	selection = $(this).data("selector");
-        }
-        
-        $('input:checkbox[name="' + selection + '[]"]').each(function () {
+        $('input:checkbox[name="selection[]"]').each(function () {
             if (this.checked)
                 selectedIds.push($(this).val());
         });
@@ -45,9 +38,9 @@ $(document).ready(function () {
         if (selectedIds.length == 0) {
             // If no selected ID's show warning
             modal.show();
-            modal.setTitle('No selection');
-            modal.setContent('You must select item(s) to use this action');
-            modal.addFooterButton("Close", 'btn btn-default', function (button, event) {
+            modal.setTitle('Sem seleção');
+            modal.setContent('Você deve selecionar um item(s) para utilizar esta ação.');
+            modal.addFooterButton("Fechar", 'btn btn-default', function (button, event) {
                 this.hide();
             });
         } else {

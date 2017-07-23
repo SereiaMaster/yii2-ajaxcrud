@@ -41,6 +41,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
 
 /**
  * <?= $controllerClass ?> implements the CRUD actions for <?= $modelClass ?> model.
@@ -57,7 +58,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
-                    'bulkdelete' => ['post'],
+                    'bulk-delete' => ['post'],
                 ],
             ],
         ];
@@ -104,8 +105,8 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
                     'content'=>$this->renderAjax('view', [
                         'model' => $this->findModel(<?= $actionParams ?>),
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','<?= substr($actionParams,1) ?>'=><?= $actionParams ?>],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    'footer'=> Html::button('Fechar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                            Html::a('Editar',['update','<?= substr($actionParams,1) ?>'=><?= $actionParams ?>],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
         }else{
             return $this->render('view', [
@@ -132,31 +133,31 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Create new <?= $modelClass ?>",
+                    'title'=> "Criar novo <?= $modelClass ?>",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer'=> Html::button('Fechar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button('Salvar',['class'=>'btn btn-primary','type'=>"submit"])
         
                 ];         
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Create new <?= $modelClass ?>",
+                    'title'=> "Criar novo <?= $modelClass ?>",
                     'content'=>'<span class="text-success">Create <?= $modelClass ?> success</span>',
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Create More',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    'footer'=> Html::button('Fechar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                            Html::a('Criar mais',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
         
                 ];         
             }else{           
                 return [
-                    'title'=> "Create new <?= $modelClass ?>",
+                    'title'=> "Criar novo <?= $modelClass ?>",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer'=> Html::button('Fechar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button('Salvar',['class'=>'btn btn-primary','type'=>"submit"])
         
                 ];         
             }
@@ -194,12 +195,12 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Update <?= $modelClass ?> #".<?= $actionParams ?>,
+                    'title'=> "Atualizar <?= $modelClass ?> #".<?= $actionParams ?>,
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer'=> Html::button('Fechar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button('Salvar',['class'=>'btn btn-primary','type'=>"submit"])
                 ];         
             }else if($model->load($request->post()) && $model->save()){
                 return [
@@ -208,17 +209,17 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','<?= substr($actionParams,1) ?>'=><?= $actionParams ?>],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    'footer'=> Html::button('Fechar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                            Html::a('Editar',['update','<?= substr($actionParams,1) ?>'=><?= $actionParams ?>],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
             }else{
                  return [
-                    'title'=> "Update <?= $modelClass ?> #".<?= $actionParams ?>,
+                    'title'=> "Atualizar <?= $modelClass ?> #".<?= $actionParams ?>,
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer'=> Html::button('Fechar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button('Salvar',['class'=>'btn btn-primary','type'=>"submit"])
                 ];        
             }
         }else{
@@ -263,6 +264,17 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
 
     }
 
+     public function actionValidation()
+    {
+    	$model = new <?= $modelClass ?>();
+    	 
+    	if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+    		Yii::$app->response->format = Response::FORMAT_JSON;
+    		
+    		return ActiveForm::validate($model);
+    	}
+    }
+
      /**
      * Delete multiple existing <?= $modelClass ?> model.
      * For ajax request will return json object
@@ -270,7 +282,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
      * <?= implode("\n     * ", $actionParamComments) . "\n" ?>
      * @return mixed
      */
-    public function actionBulkdelete()
+    public function actionBulkDelete()
     {        
         $request = Yii::$app->request;
         $pks = explode(',', $request->post( 'pks' )); // Array or selected records primary keys
@@ -317,7 +329,7 @@ if (count($pks) === 1) {
         if (($model = <?= $modelClass ?>::findOne(<?= $condition ?>)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException('Esta requisição nâo existe.');
         }
     }
 }

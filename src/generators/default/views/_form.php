@@ -17,6 +17,7 @@ echo "<?php\n";
 ?>
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model <?= ltrim($generator->modelClass, '\\') ?> */
@@ -25,7 +26,7 @@ use yii\widgets\ActiveForm;
 
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-form">
 
-    <?= "<?php " ?>$form = ActiveForm::begin(); ?>
+    <?= "<?php " ?>$form = ActiveForm::begin(['id'=>$model->formName(), 'enableAjaxValidation' => true, 'validationUrl' => Url::toRoute('<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>/validation')]); ?> 
 
 <?php foreach ($generator->getColumnNames() as $attribute) {
     if (in_array($attribute, $safeAttributes)) {
